@@ -1,5 +1,5 @@
 import React from 'react'
-import Home from "./Home"
+import Welcome from "./Welcome"
 import SignUp from './SignUp'
 import Login from './Login'
 import {
@@ -8,16 +8,14 @@ import {
   Route
 } from 'react-router-dom'
 
-function App() {
+export default function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<Home/>} />
+        <Route exact path="/" element={<Welcome/>} />
         <Route exact path="/signup" element={<SignUp/>} />
         <Route exact path="/login" element={<Login/>} />
       </Routes>
     </Router>
   )
 }
-
-export default App

@@ -1,3 +1,7 @@
+.welcome {
+    height: 100vh;
+}
+
 .menu-container {
     display: flex;   
     align-items: center;
@@ -6,6 +10,14 @@
     box-sizing: border-box;
     padding: 20px;
     
+}
+
+.logo-text {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 600;
+    box-sizing: border-box;
+    padding: 10px;
 }
 
 ul {
@@ -33,4 +45,10 @@ ul {
     background-color: #ffffff;
     color: #000000;
     border: 2px #000000 solid;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+
 }
