@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Welcome.css'
 import { Link } from 'react-router-dom'
+import Note from './Note'
+import GitHubLogo from '../assets/github-mark-white.svg'
 
 
 export default function Welcome() {
@@ -14,28 +16,39 @@ export default function Welcome() {
                 </ul>
             </div>
             <div className='main-container'>
-                <h1>Welcome to Notepad AI</h1>
-                
-                <h2>Your Intelligent Partner for All Your Note-Taking Needs</h2>
-                <p>Hello and welcome to Notepad AI, the future of note-taking and organization!</p>
-                
-                <h3>Why Notepad AI?</h3>
-                <p>Nowadays, managing your thoughts, ideas, and tasks efficiently is more important than ever. That's where Notepad AI steps in, your smart assistant designed to revolutionize the way you take notes.</p>
+                <div className='main-message'>
+                    <h1>Welcome to Notepad AI</h1>
+                    <h2>Your Intelligent Partner for All Your Note-Taking Needs</h2>
+                </div>
 
-                <h3>What Can You Do with Notepad AI?</h3>
-                <ul>
-                    <li><b>Organize with Ease:</b> From personal memos to professional meetings, keep your notes organized and accessible.</li>
-                    <li><b>AI-Powered Assistance:</b> Leverage cutting-edge AI to transcribe, summarize, and enhance your notes.</li>
-                    <li><b>Collaborate and Share:</b> Work together with your team or share your thoughts with friends seamlessly.</li>
-                    <li><b>Access Anywhere:</b> Your notes are always with you, accessible on any device, any time.</li>
-                </ul>
+                <div className='information-box'>
+                    <div className='why-notepad-container'>
+                        <h3>Why Notepad AI?</h3>
+                        <p>Nowadays, managing your thoughts, ideas, and tasks efficiently is more important than ever. That's where Notepad AI steps in, your smart assistant designed to revolutionize the way you take notes.</p>
+                    </div>
 
-                <h3>Get Started</h3>
-                <ol>
-                    <li><b>Create Your Account:</b> Quick and secure sign-up to get you started in no time.</li>
-                    <li><b>Explore the Interface:</b> Intuitive and easy to navigate and use.</li>
-                    <li><b>Start Creating:</b> Jot down your first note and experience the magic of AI-enhanced note-taking.</li>
-                </ol>
+                    <div className='get-started-container'>
+                        <h3>Start noting!</h3>
+                        <p>Enjoy intuitive interface which is easy to navigate and use. Write down your first note and experience the magic of AI-enhanced note-taking.</p>
+                        <Link className="menuLink" to="/signup">Get Started</Link>
+                    </div>
+
+                </div>
+                
+
+                <div className='what-can-you-do'>
+                    <h3>What Can You Do with Notepad AI?</h3>
+                    <div className='ideas-container'>
+                        <Note title='Organize with Ease' content='From personal memos to professional meetings, keep your notes organized and accessible.'></Note>
+                        <Note title='AI-Powered Assistance' content='Leverage cutting-edge AI to transcribe, summarize, and enhance your notes.'></Note>
+                        <Note title='Collaborate and Share' content='Work together with your team or share your thoughts with friends seamlessly.'></Note>
+                    </div>
+                </div>
+
+                <div className='footer'>
+                    <img src={GitHubLogo} width='20' height='20'></img>
+                    <a href='https://github.com/pgrzankowski'>pgrzankowski</a>
+                </div>
             </div>
         </div>
     );

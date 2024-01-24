@@ -1,7 +1,12 @@
 .note {
     width: 200px;
     height: 300px;
-    padding: 10px;
+    padding: 30px;
 
     box-shadow: 0 0 1rem .1rem rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    margin: 0;
+    font-size: 28px;
 }
