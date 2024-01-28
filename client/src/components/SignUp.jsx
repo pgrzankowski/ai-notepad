@@ -1,28 +1,48 @@
 import React from 'react'
 import '../styles/SignUp.css'
-import { Form, Button } from 'react-bootstrap'
+import { useState } from 'react'
+import { Form, Button, Alert, AlertLink } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 
 export default function SignUp() {
 
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState:{ errors }
-    } = useForm()
+    const { register, handleSubmit, watch, reset, formState:{ errors } } = useForm()
+    const [showAlert, setShowAlert] = useState(false)
+    const [serverResponse, setServerResponse] = useState('')
 
     const submitForm = (data) => {
-        console.log(data)
 
-        reset({
-            username: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        })
+        if (data.password === data.confirmPassword) {
+            const requestOptions = {
+                method: "POST",
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: data.username,
+                    email: data.email,
+                    password: data.password
+                })
+            }
+    
+            fetch('/api/auth/signup', requestOptions)
+            .then(res => res.json())
+            .then(data => {
+                setServerResponse(data.message)
+                setShowAlert(true)
+            })
+            .catch(err => console.log(err))
+    
+            reset({
+                username: '',
+                email: '',
+                password: '',
+                confirmPassword: ''
+            })
+        } else {
+            alert('Passwords do not match')
+        }
     }
 
     console.log(watch("username"))
@@ -34,6 +54,13 @@ export default function SignUp() {
         <div className="form">
             <div>
                 <h1>Sign Up</h1>
+
+                {showAlert &&
+                    <Alert variant='success' onClose={() => setShowAlert(false)} dismissible>
+                        <p>{serverResponse}</p>
+                    </Alert>
+                }
+
                 <Form.Group>
                     <Form.Label>Username</Form.Label>
                     <Form.Control type='text' placeholder='username'

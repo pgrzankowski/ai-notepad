@@ -1,29 +1,44 @@
 import '../styles/Login.css'
 import { Form, Button } from 'react-bootstrap'
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { login } from '../auth'
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+
+    const { register, handleSubmit, watch, reset, formState: {errors} } = useForm()
+
+    const navigate = useNavigate()
 
     const loginUser = (data) => {
         console.log(data)
+
+        const requestOptions = {
+            method: "POST",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: data.username,
+                password: data.password
+            })
+        }
+
+        fetch('/api/auth/login', requestOptions)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.access_token)
+            login(data.access_token)
+
+            navigate('/')
+        })
 
         reset({
             username: '',
             password: ''
         })
     }
-
-    const {
-        register,
-        handleSubmit,
-        watch,
-        reset,
-        formState: {errors}
-    } = useForm()
 
     console.log(watch("username"))
     console.log(watch("password"))

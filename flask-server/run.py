@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask_restx import Api
 from app.models import db, Note, User
 from app.config import Config, DevConfig, ProdConfig, TestConfig
