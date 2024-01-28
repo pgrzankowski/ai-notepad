@@ -47,7 +47,7 @@ export default function Welcome() {
 
                 <div className='footer'>
                     <img src={GitHubLogo} width='20' height='20'></img>
-                    <a href='https://github.com/pgrzankowski'>pgrzankowski</a>
+                    <a href='https://github.com/pgrzankowski' target='_blank'>pgrzankowski</a>
                 </div>
             </div>
         </div>

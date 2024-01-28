@@ -20,3 +20,7 @@
 .form > div > h1 {
     text-align: center;
 }
+
+.formError {
+    color: #ff6666;
+}
