@@ -31,7 +31,7 @@ export default function Login() {
             console.log(data.access_token)
             login(data.access_token)
 
-            navigate('/')
+            navigate('/home')
         })
 
         reset({
