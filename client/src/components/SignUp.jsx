@@ -98,8 +98,8 @@ export default function SignUp() {
                 </Form.Group>
 
                 <Form.Group>
-                        <small>Already have an account? <Link to='/login'>Log in</Link></small>
-                    </Form.Group>
+                    <small>Already have an account? <Link to='/login'>Log in</Link></small>
+                </Form.Group>
             </div>
         </div>
     )

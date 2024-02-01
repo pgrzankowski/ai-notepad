@@ -3,6 +3,7 @@ import Welcome from "./Welcome"
 import SignUp from './SignUp'
 import Login from './Login'
 import Home from './Home'
+import CreateNote from './CreateNote'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {
   BrowserRouter as Router,
@@ -18,6 +19,7 @@ export default function App() {
         <Route exact path="/signup" element={<SignUp/>} />
         <Route exact path="/login" element={<Login/>} />
         <Route exact path="/home" element={<Home/>} />
+        <Route exact path="/create-note" element={<CreateNote/>} />
       </Routes>
     </Router>
   )

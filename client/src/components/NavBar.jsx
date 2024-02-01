@@ -18,7 +18,7 @@ export default function NavBar() {
 
     return (
         <div className="menu-container">
-            <div className="logo-text">Notepad AI</div>
+            <Link className="logo-text" to="/home">Notepad AI</Link>
             <ul>
                 {logged
                 ? 
