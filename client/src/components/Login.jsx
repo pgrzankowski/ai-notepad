@@ -29,8 +29,8 @@ export default function Login() {
         .then(res => res.json())
         .then(data => {
             console.log(data.access_token)
+            console.log(data.user_id)
             login(data.access_token)
-
             navigate('/home')
         })
 
