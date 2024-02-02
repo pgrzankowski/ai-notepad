@@ -39,7 +39,6 @@ export default function Home() {
 
     return (
         <div>
-            <NavBar />
             <div className='home-content'>
                 <div className='toolbox'>
                     <ul>

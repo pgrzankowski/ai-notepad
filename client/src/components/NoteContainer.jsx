@@ -9,7 +9,7 @@ export default function NoteContainer({ notes }) {
                 {
                     notes.map(note => {
                         return (
-                            <Note key={note.id} title={note.title} content={note.content} />
+                            <Note key={note.id} noteId={note.id} title={note.title} content={note.content} />
                         )
                         })
                 }

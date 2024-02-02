@@ -1,0 +1,19 @@
+.footer {
+    background-color: #000000;
+    color: #ffffff;
+    position: fixed;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer > a, .footer > a:visited, .footer > a:active {
+    text-decoration: none;
+    color: #ffffff;
+}

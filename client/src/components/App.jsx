@@ -1,4 +1,6 @@
 import React from 'react'
+import NavBar from './NavBar'
+import Footer from './Footer'
 import Welcome from "./Welcome"
 import SignUp from './SignUp'
 import Login from './Login'
@@ -14,6 +16,7 @@ import {
 export default function App() {
   return (
     <Router>
+      <NavBar />
       <Routes>
         <Route exact path="/" element={<Welcome/>} />
         <Route exact path="/signup" element={<SignUp/>} />
@@ -21,6 +24,7 @@ export default function App() {
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/create-note" element={<CreateNote/>} />
       </Routes>
+      <Footer />
     </Router>
   )
 }

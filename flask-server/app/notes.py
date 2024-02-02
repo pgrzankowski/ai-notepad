@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Namespace, Resource, fields
 from app.models import Note, User
@@ -31,7 +31,7 @@ class NotesResource(Resource):
         notes = user.notes
         return notes
 
-    @note_ns.marshal_with(note_model)
+    # @note_ns.marshal_with(note_model)
     @note_ns.expect(note_model)
     @jwt_required()
     def post(self, username):
@@ -48,7 +48,9 @@ class NotesResource(Resource):
             user_id = user.id
         )
         new_note.save()
-        return new_note, 201
+        message = f"Note: '{new_note.title}' created successfully"
+        message = jsonify({"message": message})
+        return message
 
 @note_ns.route('/<string:username>/<int:note_id>')
 class NotesResource(Resource):
@@ -83,7 +85,7 @@ class NotesResource(Resource):
     @jwt_required()
     def delete(self, username, note_id):
         """Delete a note of a user by note_id"""
-        user = User.query.filter_by(username=username)
+        user = User.query.filter_by(username=username).first()
         if user.username != get_jwt_identity():
             note_ns.abort(403, "Access denied")
         note_to_delete = Note.query.filter_by(id=note_id, user_id=user.id).first()
