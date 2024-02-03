@@ -5,8 +5,13 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-
     box-shadow: 0 0 1rem .1rem rgba(0, 0, 0, 0.2);
+
+    transition: transform .1s;
+}
+
+.note:hover {
+    transform: scale(1.05);
 }
 
 h2 {
@@ -44,4 +49,9 @@ p {
 
 .option {
     cursor: pointer;
+    transition: transform .2;
+}
+
+.option:hover {
+    transform: scale(1.2);
 }

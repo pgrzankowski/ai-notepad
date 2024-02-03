@@ -49,8 +49,7 @@ class NotesResource(Resource):
         )
         new_note.save()
         message = f"Note: '{new_note.title}' created successfully"
-        message = jsonify({"message": message})
-        return message
+        return jsonify({"message": message})
 
 @note_ns.route('/<string:username>/<int:note_id>')
 class NotesResource(Resource):
@@ -66,7 +65,6 @@ class NotesResource(Resource):
             note_ns.abort(404, "Note not found")
         return note
 
-    @note_ns.marshal_with(note_model)
     @note_ns.expect(note_model)
     @jwt_required()
     def put(self, username, note_id):
@@ -79,7 +77,8 @@ class NotesResource(Resource):
             note_ns.abort(404, "Note not found")
         data = request.get_json()
         note_to_update.update(data.get('title'), data.get('content'))
-        return note_to_update
+        message = f"Note: {note_to_update.title} updated successfully"
+        return jsonify({"message": message})
 
     @note_ns.marshal_with(note_model)
     @jwt_required()
@@ -92,4 +91,5 @@ class NotesResource(Resource):
         if not note_to_delete:
             note_ns.abort(404, "Note not found")
         note_to_delete.delete()
-        return note_to_delete
+        message = f"Note: {note_to_delete.title} deleted successfully"
+        return jsonify({"message": message})

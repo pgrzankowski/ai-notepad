@@ -1,22 +1,26 @@
 import { useForm } from "react-hook-form"
 import { Form, Button, Alert } from "react-bootstrap"
-import '../styles/CreateNote.css'
-import { jwtDecode } from "jwt-decode"
-import { useState } from "react"
+import { useLocation } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
-export default function CreateNote() {
-    
+
+
+export default function EditNote() {
     const [serverResponse, setServerResponse] = useState('')
     const [showAlert, setShowAlert] = useState(false)
 
-    const { register, handleSubmit, watch, reset, formState:{ errors }} = useForm()
+    const location = useLocation()
+    const { noteId } = location.state;
 
-    const createNote = (data) => {
-        const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY')
-        const username = jwtDecode(token).sub
+    const { register, handleSubmit, watch, setValue, formState: { errors }} = useForm()
 
+    const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY')
+    const username = jwtDecode(token).sub
+
+    const updateNote = (data) => {
         const requestOptions = {
-            method: "POST",
+            method: "PUT",
             headers: {
                 'content-type': 'application/json',
                 'Authorization': `Bearer ${JSON.parse(token)}`
@@ -27,27 +31,37 @@ export default function CreateNote() {
             })
         }
 
-        fetch(`/api/note/${username}`, requestOptions)
+        fetch(`/api/note/${username}/${noteId}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             setServerResponse(data.message)
             setShowAlert(true)
-            
-        })
-
-        reset({
-            title: '',
-            content: ''
         })
     }
 
-    console.log(watch("title"))
-    console.log(watch("content"))
+    useEffect(() => {
+        console.log(username)
+
+        const requestOptions = {
+            method: "GET",
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${JSON.parse(token)}`
+            }
+        }
+
+        fetch(`/api/note/${username}/${noteId}`, requestOptions)
+        .then(res => res.json())
+        .then(data => {
+            setValue('title', data.title)
+            setValue('content', data.content)
+        })
+    }, [])
 
     return (
         <div>
             <div className="creation-form">
-                <h1>Create Note</h1>
+                <h1>Edit Note</h1>
 
                 {showAlert &&
                     <Alert variant="success" dismissible>
@@ -58,7 +72,7 @@ export default function CreateNote() {
                 <Form.Group>
                     <Form.Label>Title</Form.Label>
                     <Form.Control type="text" placeholder="Title"
-                    {...register("title", { required: true, maxLength: 30 })} />
+                    {...register("title", { required: true })} />
                 </Form.Group>
 
                 <hr/>
@@ -70,8 +84,9 @@ export default function CreateNote() {
                 </Form.Group>
 
                 <Form.Group>
-                    <Button as='sub' variant='dark' onClick={handleSubmit(createNote)}>Create</Button>
+                    <Button as='sub' variant='dark' onClick={handleSubmit(updateNote)}>Save</Button>
                 </Form.Group>
+
             </div>
         </div>
     )

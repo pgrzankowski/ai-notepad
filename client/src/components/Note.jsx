@@ -33,7 +33,7 @@ export default function Note({ noteId, title, content }) {
     }
 
     return (
-        <div className="note" onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+        <div className="note" onMouseEnter={handleEnter} onMouseLeave={handleLeave} >
             <div className='content'>
                 <h2>{title}</h2>
                 <hr />
@@ -42,7 +42,7 @@ export default function Note({ noteId, title, content }) {
             { showOptions &&
             <div className='options'>
                 <ul>
-                    <li><Link className='option'><img src={edit_note} width='20px' height='20px' /></Link></li>
+                    <li><div className='option'><Link to="/edit-note" state={{noteId: noteId}}><img src={edit_note} width='20px' height='20px' /></Link></div></li>
                     <li><div className='option' onClick={handleDelete}><img src={delete_note} width='20px' height='20px' /></div></li>
                 </ul>
             </div>
