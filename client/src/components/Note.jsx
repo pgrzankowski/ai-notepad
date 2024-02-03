@@ -7,6 +7,7 @@ import { jwtDecode } from 'jwt-decode'
 
 export default function Note({ noteId, title, content }) {
     const [showOptions, setShowOptions] = useState(false)
+    const [deleted, setDeleted] = useState(false)
 
     const handleEnter = () => {
         setShowOptions(true)
@@ -29,10 +30,13 @@ export default function Note({ noteId, title, content }) {
         }
 
         fetch(`/api/note/${username}/${noteId}`, requestOptions)
+        setDeleted(true)
 
     }
 
     return (
+        <>
+        {!deleted &&
         <div className="note" onMouseEnter={handleEnter} onMouseLeave={handleLeave} >
             <div className='content'>
                 <h2>{title}</h2>
@@ -48,5 +52,7 @@ export default function Note({ noteId, title, content }) {
             </div>
             }
         </div>
+        }
+        </>
     )
 }
