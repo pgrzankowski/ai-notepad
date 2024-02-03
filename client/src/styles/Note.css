@@ -1,6 +1,6 @@
 .note {
-    width: 200px;
-    height: 300px;
+    width: 300px;
+    height: 402px;
     padding: 20px;
     box-sizing: border-box;
     display: flex;
@@ -8,6 +8,7 @@
     box-shadow: 0 0 1rem .1rem rgba(0, 0, 0, 0.2);
 
     transition: transform .1s;
+    min-height: 0;
 }
 
 .note:hover {
@@ -29,7 +30,13 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: start;
+    word-break: break-word;
+
+    min-height: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
+
 
 .options > ul {
     margin: 0;
