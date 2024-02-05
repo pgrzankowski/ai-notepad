@@ -7,6 +7,7 @@ import Login from './Login'
 import Home from './Home'
 import CreateNote from './CreateNote'
 import EditNote from './EditNote'
+import ChatBot from './ChatBot'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import {
   BrowserRouter as Router,
@@ -25,6 +26,7 @@ export default function App() {
         <Route exact path="/home" element={<Home/>} />
         <Route exact path="/create-note" element={<CreateNote/>} />
         <Route exact path="/edit-note" element={<EditNote/>} />
+        <Route exact path="/chat-bot" element={<ChatBot/>} />
       </Routes>
       <Footer />
     </Router>

@@ -25,6 +25,7 @@ client/*.sw?
 # flask-server
 flask-server/__pycache__/
 flask-server/app/__pycache__/
+flask-server/app/components/__pycache__/
 flask-server/app/dev.db
 flask-server/env/
 flask-server/.env

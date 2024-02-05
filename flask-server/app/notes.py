@@ -2,6 +2,8 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Namespace, Resource, fields
 from app.models import Note, User
+from app.components.ChatBot import ChatBot
+from app.components.NoteParser import parseNotes
 
 
 note_ns = Namespace('note', description="A namespace for user notes management")
@@ -93,3 +95,16 @@ class NotesResource(Resource):
         note_to_delete.delete()
         message = f"Note: {note_to_delete.title} deleted successfully"
         return jsonify({"message": message})
+    
+
+@note_ns.route('/chat-bot/<string:username>')
+class NotesResource(Resource):
+    @jwt_required()
+    def post(self, username):
+        user = User.query.filter_by(username=username).first()
+        notes = parseNotes(user.notes)
+        bot = ChatBot(notes)
+        data = request.get_json()
+        response = bot.getResponse(data.get("question"))
+        return jsonify({"response": response})
+    

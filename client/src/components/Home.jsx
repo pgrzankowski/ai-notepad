@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { Link } from 'react-router-dom'
 import '../styles/Home.css'
 import create_note from '../assets/toolbar/create-note.svg'
+import ai_bot from '../assets/toolbar/ai-bot.svg'
 
 export default function Home() {
     const [logged] = useAuth()
@@ -41,7 +42,8 @@ export default function Home() {
             <div className='home-content'>
                 <div className='toolbox'>
                     <ul>
-                        <li><Link className='tool' to="/create-note" ><img src={create_note} width='30px' height='30px' style={{filter: "invert(100%)"}} /></Link></li>
+                        <li><Link className='tool' to="/create-note" ><img src={create_note} /></Link></li>
+                        <li><Link className='tool' to="/chat-bot" ><img src={ai_bot} /></Link></li>
                     </ul>
                 </div>
                 <NoteContainer notes={notes} />
