@@ -25,12 +25,29 @@ pip install -r requirements.txt
 Inside flask-server directory create `.env` file and fill it using a following template:
 
 ```bash
-SECRET_KEY=""
+SECRET_KEY="Your secret key"
 SQLALCHEMY_TRACK_MODIFICATIONS=False
 FLASK_APP=run
 FLASK_CONFIG=DevConfig
 OPENAI_API_KEY="Your openai api key"
 ```
+The secret key can be generated running this line in terminal:
+
+```bash
+python -c "import secrets; print(secrets.token_hex(12))"
+```
 
 ## 4. Create a local database
 
+To create a database go to `flask-server` and run those commands:
+
+```bash
+flask db upgrade
+```
+
+If you wish to make further changes to database, after making them run:
+
+```bash
+flask db migrate -m "Desciption of changes"
+flask db upgrade
+```
