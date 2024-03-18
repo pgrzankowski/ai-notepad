@@ -1,28 +1,36 @@
+import React, { useEffect, useState } from 'react'
 import '../styles/NavBar.css'
-import { useAuth, logout } from '../auth'
+import useSignOut from 'react-auth-kit/hooks/useSignOut'
+import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
+// import {useIsAuthenticated} from 'react-auth-kit'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router-dom'
-
-
 
 
 export default function NavBar() {
+    const getAuthState = useIsAuthenticated();
+    const isAuth = getAuthState();
 
-    const [logged] = useAuth()
-    const navigate = useNavigate()
+    const signout = useSignOut();
 
-    const handleLogout = () => {
-        logout()
-        navigate('/')
+    useEffect(() => {
+        console.log('isAuth: ', isAuth);
+    }, [isAuth])
+
+    
+
+    const handleSignout = () => {
+        signout();
+        window.location.reload();
     }
+
 
     return (
         <div className="menu-container">
             <Link className="logo-text" to="/home">Notepad AI</Link>
             <ul>
-                {logged
+                {isAuth
                 ? 
-                <li><button className="menuLink" onClick={handleLogout}>Log out</button></li>
+                <li><button className="menuLink" onClick={handleSignout}>Log out</button></li>
                 : 
                 <>
                 <li><Link className="menuLink" to="/login">Log in</Link></li>

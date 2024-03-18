@@ -73,10 +73,10 @@ class Login(Resource):
             access_token = create_access_token(identity=db_user.username)
             refresh_token = create_refresh_token(identity=db_user.username)
 
-            return jsonify({
+            return make_response(jsonify({
                 "access_token": access_token,
                 "refresh_token": refresh_token
-            })
+            }), 200)
         
 
 @auth_ns.route('/refresh')

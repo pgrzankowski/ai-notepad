@@ -2,46 +2,59 @@ import '../styles/Login.css'
 import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { login } from '../auth'
 import { useNavigate } from 'react-router-dom'
+import useSignIn from 'react-auth-kit/hooks/useSignIn';
 
 export default function Login() {
-
-    const { register, handleSubmit, watch, reset, formState: {errors} } = useForm()
+    const signIn = useSignIn();
+    const { register, handleSubmit, reset, formState: {errors} } = useForm();
 
     const navigate = useNavigate()
 
-    const loginUser = (data) => {
-        console.log(data)
-
+    const loginUser = (loginData) => {
         const requestOptions = {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
             },
             body: JSON.stringify({
-                username: data.username,
-                password: data.password
+                username: loginData.username,
+                password: loginData.password
             })
         }
 
         fetch('/api/auth/login', requestOptions)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data.access_token)
-            console.log(data.user_id)
-            login(data.access_token)
-            navigate('/home')
+        .then(res => {
+            if (!res.ok) {
+                throw new Error('Invalid server response')
+            }
+            return res.json();
         })
-
-        reset({
-            username: '',
-            password: ''
+        .then(data => {
+            if (data && data.access_token) {   
+                if (signIn({
+                    auth: {
+                    token: data.access_token,
+                    type: 'Bearer',
+                    expiresIn: 2
+                    },
+                    userState: {username: loginData.username}
+                })) {
+                    reset({
+                        username: '',
+                        password: ''
+                    })
+            
+                    navigate('/home')
+                }
+            } else {
+                console.log('No access token reveived')
+            }
+        })
+        .catch(err => {
+            console.error('There was a problem while fetching: ', err)
         })
     }
-
-    console.log(watch("username"))
-    console.log(watch("password"))
 
     return (
         <div className="login">
