@@ -3,19 +3,20 @@ import { Form, Button, Alert } from "react-bootstrap"
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-
+import { useCookies } from "react-cookie";
 
 
 export default function EditNote() {
     const [serverResponse, setServerResponse] = useState('')
     const [showAlert, setShowAlert] = useState(false)
+    const [cookies] = useCookies(['access_token'])
 
     const location = useLocation()
     const { noteId } = location.state;
 
     const { register, handleSubmit, watch, setValue, formState: { errors }} = useForm()
 
-    const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY')
+    const token = cookies.access_token
     const username = jwtDecode(token).sub
 
     const updateNote = (data) => {
@@ -23,7 +24,7 @@ export default function EditNote() {
             method: "PUT",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${JSON.parse(token)}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 title: data.title,
@@ -46,13 +47,14 @@ export default function EditNote() {
             method: "GET",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${JSON.parse(token)}`
+                'Authorization': `Bearer ${token}`
             }
         }
 
         fetch(`/api/note/${username}/${noteId}`, requestOptions)
         .then(res => res.json())
         .then(data => {
+            console.log(data)
             setValue('title', data.title)
             setValue('content', data.content)
         })

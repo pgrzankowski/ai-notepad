@@ -5,22 +5,24 @@ import { jwtDecode } from 'jwt-decode'
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import send_prompt from '../assets/chat_bot/send_prompt.svg'
+import { useCookies } from 'react-cookie'
 
 
 export default function ChatBot() {
     const [conversation, setConversation] = useState([])
+    const [cookies] = useCookies(['access_token'])
 
     const { register, reset, handleSubmit } = useForm()
 
     const sendPrompt = (data) => {
-        const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY')
+        const token = cookies.access_token
         const username = jwtDecode(token).sub
 
         const requestOptions = {
             method: "POST",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${JSON.parse(token)}`
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 question: data.question
@@ -29,7 +31,7 @@ export default function ChatBot() {
 
         setConversation(prevConversation => [...prevConversation, {id: uuidv4(), sender: "user", text: data.question}])
 
-        fetch(`/api/note/chat-bot/${username}`, requestOptions)
+        fetch(`/api/assistant/${username}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             console.log(data.response)

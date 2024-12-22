@@ -2,6 +2,7 @@ import Note from './Note'
 import '../styles/NoteContainer.css'
 
 export default function NoteContainer({ notes }) {
+    console.log(notes)
     return (
         <div className='note-container'>
             {notes

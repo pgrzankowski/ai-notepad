@@ -3,13 +3,14 @@ import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import useSignIn from 'react-auth-kit/hooks/useSignIn';
+import { useCookies } from 'react-cookie'
+
 
 export default function Login() {
-    const signIn = useSignIn();
     const { register, handleSubmit, reset, formState: {errors} } = useForm();
 
     const navigate = useNavigate()
+    const [cookie, setCookie] = useCookies(['access_token'])
 
     const loginUser = (loginData) => {
         const requestOptions = {
@@ -31,22 +32,14 @@ export default function Login() {
             return res.json();
         })
         .then(data => {
-            if (data && data.access_token) {   
-                if (signIn({
-                    auth: {
-                    token: data.access_token,
-                    type: 'Bearer',
-                    expiresIn: 2
-                    },
-                    userState: {username: loginData.username}
-                })) {
-                    reset({
-                        username: '',
-                        password: ''
-                    })
-            
-                    navigate('/home')
-                }
+            if (data && data.access_token) {
+                setCookie('access_token', data.access_token)
+                reset({
+                    username: '',
+                    password: ''
+                })
+        
+                navigate('/home')
             } else {
                 console.log('No access token reveived')
             }

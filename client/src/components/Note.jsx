@@ -1,13 +1,16 @@
 import '../styles/Note.css'
 import { Link } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import delete_note from '../assets/note/delete-note.svg'
 import edit_note from '../assets/note/edit-note.svg'
 import { jwtDecode } from 'jwt-decode'
+import { useCookies } from 'react-cookie'
+
 
 export default function Note({ noteId, title, content }) {
     const [showOptions, setShowOptions] = useState(false)
     const [deleted, setDeleted] = useState(false)
+    const [cookies] = useCookies(['access_token'])
 
     const handleEnter = () => {
         setShowOptions(true)
@@ -18,14 +21,14 @@ export default function Note({ noteId, title, content }) {
     }
 
     const handleDelete = () => {
-        const token = localStorage.getItem('REACT_TOKEN_AUTH_KEY')
+        const token = cookies.access_token
         const username = jwtDecode(token).sub
 
         const requestOptions = {
             method: "DELETE",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${JSON.parse(token)}`
+                'Authorization': `Bearer ${token}`
             }
         }
 

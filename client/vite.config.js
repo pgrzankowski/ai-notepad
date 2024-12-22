@@ -8,7 +8,8 @@ export default defineConfig({
     proxy: {
       // Using the '/api' prefix here
       '/api': {
-        target: 'http://localhost:5000',  // Flask backend address
+        // target: 'http://localhost:5000',  // Flask backend address
+        target: 'http://localhost:8000',  // FastAPI backend
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

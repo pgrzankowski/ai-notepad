@@ -1,4 +1,4 @@
-# client
+# React client
 client/logs
 client/*.log
 client/npm-debug.log*
@@ -22,10 +22,27 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 
-# flask-server
+# Flask server
 flask-server/__pycache__/
 flask-server/app/__pycache__/
 flask-server/app/components/__pycache__/
 flask-server/app/dev.db
 flask-server/env/
 flask-server/.env
+flask-server/.venv
+
+# FastAPI server
+server/__pycache__/
+server/api/__pycache__/
+server/api/dtos/__pycache__/
+server/api/endpoints/__pycache__/
+server/api/services/__pycache__/
+server/assistant/__pycache__/
+server/db/__pycache__/
+server/db/models/__pycache__/
+server/database.db
+server/.env
+server/.venv
+
+# jet-brains
+.idea

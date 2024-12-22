@@ -9,42 +9,35 @@ import CreateNote from './CreateNote'
 import EditNote from './EditNote'
 import ChatBot from './ChatBot'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import AuthProvider from 'react-auth-kit'
-import AuthOutlet from '@auth-kit/react-router/AuthOutlet'
-import createStore from 'react-auth-kit/createStore'
 import {
   BrowserRouter as Router,
   Routes,
   Route
 } from 'react-router-dom'
+import { CookiesProvider, useCookies } from 'react-cookie'
+
 
 export default function App() {
-  const store = createStore({
-    authName: '_auth',
-    authType: 'cookie',
-    cookieDomain: window.location.hostname,
-    cookieSecure: window.location.protocol === 'https:',
-  });
+
+  const [cookies] = useCookies(['access_token'])
+  const isAuth = cookies.access_token ? true : false
 
   return (
-    <AuthProvider store={store}>
+    <CookiesProvider defaultSetOptions={{path: '/'}}>
       <Router>
         <NavBar />
         <Routes>
-          <Route exact path="/" element={<Welcome/>} />
+          <Route exact path="/" element={!isAuth ? <Welcome/> : <Home/>} />
           <Route exact path="/signup" element={<SignUp/>} />
           <Route exact path="/login" element={<Login/>} />
 
-          <Route element={<AuthOutlet fallbackPath='/login' />}>
-            <Route exact path='/home' element={<Home/>} />
-            <Route exact path='/create-note' element={<CreateNote/>} />
-            <Route exact path="/edit-note" element={<EditNote/>} />
-            <Route exact path="/chat-bot" element={<ChatBot/>} />
-          </Route>
-
+          <Route exact path='/home' element={isAuth ? <Home/> : <Login/>} />
+          <Route exact path='/create-note' element={isAuth ? <CreateNote/> : <Login/>} />
+          <Route exact path="/edit-note" element={isAuth ? <EditNote/> : <Login/>} />
+          <Route exact path="/chat-bot" element={isAuth ? <ChatBot/> : <Login/>} />
         </Routes>
         <Footer />
       </Router>
-    </AuthProvider>
+    </CookiesProvider>
   )
 }

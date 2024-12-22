@@ -1,25 +1,22 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect} from 'react'
 import '../styles/NavBar.css'
-import useSignOut from 'react-auth-kit/hooks/useSignOut'
-import useIsAuthenticated from 'react-auth-kit/hooks/useIsAuthenticated'
-// import {useIsAuthenticated} from 'react-auth-kit'
 import { Link } from 'react-router-dom'
+import { useCookies } from 'react-cookie'
 
 
 export default function NavBar() {
-    const getAuthState = useIsAuthenticated();
-    const isAuth = getAuthState();
-
-    const signout = useSignOut();
+    const [cookies, setCookie, removeCookie] = useCookies(['access_token'])
+    const isAuth = cookies.access_token ? true : false;
 
     useEffect(() => {
         console.log('isAuth: ', isAuth);
+
     }, [isAuth])
 
     
 
     const handleSignout = () => {
-        signout();
+        removeCookie('access_token');
         window.location.reload();
     }
 
