@@ -6,3 +6,7 @@ To properly setup frontend part of the project you only need to install required
 npm install
 ```
 
+After installing, client is ready to run:
+```bash
+npm run dev
+```
