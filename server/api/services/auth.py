@@ -1,4 +1,4 @@
-from ..dtos import RegisterDTO, LoginDTO
+from ..dtos import RegisterDTO
 from db.database import SessionDep
 from db.models import User
 from hashlib import sha256

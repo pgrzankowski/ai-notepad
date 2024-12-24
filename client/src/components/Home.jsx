@@ -1,35 +1,25 @@
 import { useEffect, useState } from 'react'
-import { jwtDecode } from 'jwt-decode'
 import NoteContainer from './NoteContainer'
 import { Link } from 'react-router-dom'
 import '../styles/Home.css'
 import create_note from '../assets/toolbar/create-note.svg'
 import ai_bot from '../assets/toolbar/ai-bot.svg'
-import { useCookies } from 'react-cookie'
-
+import { useAuth } from '../hooks/AuthProvider'
 
 export default function Home() {
-
-    const [cookies, setCookie] = useCookies(['access_token'])
-
-    const decoded = jwtDecode(cookies.access_token)
-    console.log(decoded.sub)
-    const username = decoded.sub
-
     const [notes, setNotes] = useState([])
+    const { user } = useAuth()
 
-
-    useEffect(() => {
-        
+    useEffect(() => {        
         const requestOptions = {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${cookies.access_token}`
+                'Authorization': `Bearer ${user.access_token}`
             },
         }
 
-        fetch(`/api/note/${username}`, requestOptions)
+        fetch(`/api/note/${user.username}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             setNotes(data)
@@ -38,7 +28,10 @@ export default function Home() {
     }, [])
 
     return (
-        <div>
+        <div className='home-container'>
+            <div className='home-header'>
+                <h1>Hi, {user.username}!</h1>
+            </div>
             <div className='home-content'>
                 <div className='toolbox'>
                     <ul>

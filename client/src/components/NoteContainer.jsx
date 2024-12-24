@@ -1,11 +1,11 @@
 import Note from './Note'
 import '../styles/NoteContainer.css'
 
+
 export default function NoteContainer({ notes }) {
-    console.log(notes)
     return (
         <div className='note-container'>
-            {notes
+            {notes.length > 0
             ? <>
                 {
                     notes.map(note => {
@@ -15,7 +15,7 @@ export default function NoteContainer({ notes }) {
                         })
                 }
                 </>
-            : <h1>Space for your notes!</h1>
+            : <h4 className='notes-placeholder'>Space for your notes!</h4>
                 
             }
         </div>

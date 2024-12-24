@@ -1,6 +1,13 @@
 .note-container {
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
 
     gap: 20px;
+}
+
+.notes-placeholder {
+    margin: 0 auto;
+    text-align: center;
+    color: #666666;
 }

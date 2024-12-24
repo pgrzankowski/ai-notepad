@@ -3,14 +3,12 @@ import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useCookies } from 'react-cookie'
-
+import { useAuth } from '../hooks/AuthProvider'
 
 export default function Login() {
     const { register, handleSubmit, reset, formState: {errors} } = useForm();
-
+    const { isAuth, username, login } = useAuth()
     const navigate = useNavigate()
-    const [cookie, setCookie] = useCookies(['access_token'])
 
     const loginUser = (loginData) => {
         const requestOptions = {
@@ -33,7 +31,7 @@ export default function Login() {
         })
         .then(data => {
             if (data && data.access_token) {
-                setCookie('access_token', data.access_token)
+                login(data.access_token)
                 reset({
                     username: '',
                     password: ''
