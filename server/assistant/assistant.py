@@ -1,8 +1,7 @@
-from pydantic_ai import Agent
-from .schemas import AssistantDeps, AssistantResult
-from .prompts import system_prompt
-from .tools import (get_all_notes,
-                    create_note)
+from pydantic_ai import Agent, RunContext
+from .schemas import AssistantDeps
+from .prompts import SYSTEM_PROMPT
+from .tools import call_querry_agent
 
 
 class Assistant:
@@ -10,15 +9,19 @@ class Assistant:
         self._agent = self._setup_agent()
 
     def _setup_agent(self):
-        agent = Agent('ollama:llama3.2',
+        agent = Agent(model='gemini-1.5-flash',
                       deps_type=AssistantDeps,
-                    #   result_type=AssistantResult,
-                      system_prompt=system_prompt,
-                      tools=[get_all_notes, create_note])
+                      tools=[call_querry_agent])
+        
+        @agent.system_prompt
+        def system_prompt(ctx: RunContext[AssistantDeps]) -> str:
+            username = ctx.deps.username
+            return SYSTEM_PROMPT.format(username=username)
         return agent
-    
-    async def get_response(self, user_input, username, session):
-        deps=AssistantDeps(username=username,
+        
+    async def get_response(self, user_input, user_id, username, session):
+        deps=AssistantDeps(user_id=user_id,
+                           username=username,
                            session_dep=session)
         result = await self._agent.run(user_input,
                                        deps=deps)

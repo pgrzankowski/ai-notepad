@@ -1,37 +1,41 @@
 from pydantic_ai import RunContext
-from .schemas import AssistantDeps
-from api.services.auth import get_user
-from db.models import Note
+from .schemas import AssistantDeps, QueringDeps
+from .quering_agent import quering_agent
+from sqlmodel import text
 
 
-def get_all_notes(ctx: RunContext[AssistantDeps]):
+async def call_querry_agent(ctx: RunContext[AssistantDeps], user_input: str) -> str:
     """
-    Tool to get all notes for a user
+    Tool to call the quering agent, which creates SQL queries, and execute the querry.
+    user_input: str
     """
+    quering_deps = QueringDeps(user_id=ctx.deps.user_id)
+    result: str = await quering_agent.run(user_input,
+                                         deps=quering_deps)
+    print(result.data)
+    query = result.data.query
+    query = query.rstrip('!').replace('\\', '')
     session = ctx.deps.session_dep
-    username = ctx.deps.username
-    user = get_user(username, session)
-    notes = user.notes
-    if not notes:
-        connected_notes = "This user doesn't have any notes."
+    if query.startswith('INSERT') or query.startswith('UPDATE') or query.startswith('DELETE'):
+        session.exec(text(query))
+        response = f"Done! Query used: {query}"
+    elif query.startswith('SELECT'):
+        query_result = session.exec(text(query))
+        print(query_result)
+        rows = query_result.fetchall()
+        print(rows)
+        response = f"Query used: {query}\n"
+        if not rows:
+            response += "No results found"
+        else:
+            for row in rows:
+                for item in row:
+                    response += f"{item}, "
+                response = response.rstrip(', ') + '\n'
     else:
-        connected_notes = ""
-    for note in notes:
-        connected_notes += f"Note:\nTitle: {note.title}:\nContent: {note.content}\n\n"
-    print(connected_notes)
-    return connected_notes
-
-def create_note(ctx: RunContext[AssistantDeps]):
-    """
-    Tool to create a note for a user
-    """
-    session = ctx.deps.session_dep
-    username = ctx.deps.username
-    user = get_user(username, session)
-    new_note = Note(title="AI Gen Note",
-                    content="AI Gen Content",
-                    user_id=user.id)
-    session.add(new_note)
+        response = f"Unauthorized query: {query}"
+    
+    print(query)
+    print(response)
     session.commit()
-    session.refresh(new_note)
-    return f"Note: '{new_note.title}' created successfully"
+    return response
