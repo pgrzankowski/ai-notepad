@@ -4,20 +4,19 @@
 
 ## Overview
 
-AI Notepad is a simple web application designed to enhance your note-taking experience. Leveraging the power of modern web technologies, this app allows users to create and manage personal notes securely and interactively. Built using React-Vite for the frontend and FastAPI with SQLite for the backend, AI Notepad offers a simple interface and intuitive usage.
+AI Notepad is a simple web application designed to enhance your note-taking experience. This app allows users to create and manage notes in a traditional manual way, but also by leveraging power of llm agents. Built using React and FastAPI with SQLite.
 
 ## Features
 
-- **Secure Account Creation:** Users can create private accounts to ensure their notes and conversations are securely stored and accessible only to them.
-- **Interactive Note Management:** Create, store, and manage your notes with ease. The intuitive interface makes note-taking and organization simple and effective.
-- **Assistant Interaction:** Chat with assistant about your notes insted of scrolling through them trying to find something. This feature uses the local llama3.2 model. It's responses aren't the best but enough to present main idea behind this project.
-- **Robust Backend:** The FastAPI backend with SQLite database ensures fast and reliable access to your notes, with secure authentication mechanisms in place to protect your data.
+- **Account Creation:** Users can create private accounts.
+- **Note Management:** Users can create, store, and manage their notes using simple interface.
+- **Assistant Interaction:** Manage your notes by chatting with assistant. It is able to convert user input into SQL queries which are then executed.s
 
 ## Technologies
 
-- **Frontend:** The application's frontend is developed using React-Vite, utilizing the latest web development practices for speedy development cycles and optimal performance.
-- **Backend:** FastAPI serves as the backend framework, providing a lightweight yet powerful solution for server-side logic and API development. SQLite is used as the database, offering a simple, efficient, and reliable storage solution for user data.
-- **Ollama Integration:** The assistant feature is powered by the Ollama llama3.2 local model, enabling frustrating interactions.
+- **Frontend:** React.
+- **Backend:** FastAPI with SQLite.
+- **Multi Agent system:** Pydantic AI with `gemini-1.5-flash` model.
 
 ## Getting Started
 
@@ -29,9 +28,29 @@ To get started with AI Notepad, follow these steps:
     git clone https://github.com/pgrzankowski/ai-notepad.git
     ```
 
-2. **Install Dependencies:** To properly setup dependencies for both frontend and backend follow the instructions inside `client` and `server` directories.
+2. **Install Dependencies:** Setup dependencies for both `client` and `server`.
 
-3. **Download Ollama Model:** Ensure you have an Ollama and their model downloaded. It can be downloaded from official website: `https://ollama.com/`.
+    - ### Client
+        To install required node modules go to client directory and execute the following command. If you don't have npm installed follow this tutorial first https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-20-04.
+
+        ```bash
+        npm install
+        ```
+
+    - ### Server
+        To install dependencies create a virtual environment inside server directory:
+        ```bash
+        python -m venv .venv
+        ```
+        Then source it:
+        ```bash
+        source .venv/bin/activate
+        ```
+        Then install dependencies:
+        ```bash
+        pip install -r requirements.txt
+        ```
+
 
 4. **Start the Application:**
     - Launch the frontend application. Go to `client` folder and run:
@@ -47,6 +66,10 @@ To get started with AI Notepad, follow these steps:
         ```
 
 5. **Access the Application:** Open your web browser and navigate to `http://localhost:5173` to start using AI Notepad.
+
+6. **Security Remarks** Because in this project one of the llm agents has power to execute queries to the database, I've seen some security issues when developing this appliation. Mainly when user runs the prompt which tells agent to alter his user_id theres a chance that model will accept it and query 
+notes another or all users. The only solution I can think of at the moment is by rejecting queries with different user_id then this of currently log user.
+I will be fixing this problem in the near future.
 
 ## License
 

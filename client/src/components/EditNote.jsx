@@ -2,37 +2,30 @@ import { useForm } from "react-hook-form"
 import { Form, Button, Alert } from "react-bootstrap"
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { useCookies } from "react-cookie";
+import { useAuth } from "../hooks/AuthProvider";
 
 
 export default function EditNote() {
     const [serverResponse, setServerResponse] = useState('')
     const [showAlert, setShowAlert] = useState(false)
-    const [cookies] = useCookies(['access_token'])
-
+    const { user } = useAuth()
     const location = useLocation()
     const { noteId } = location.state;
-
     const { register, handleSubmit, watch, setValue, formState: { errors }} = useForm()
-
-    const token = cookies.access_token
-    const username = jwtDecode(token).sub
 
     const updateNote = (data) => {
         const requestOptions = {
             method: "PUT",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify({
                 title: data.title,
                 content: data.content
             })
         }
-
-        fetch(`/api/note/${username}/${noteId}`, requestOptions)
+        fetch(`/api/note/${user.username}/${noteId}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             setServerResponse(data.message)
@@ -41,17 +34,14 @@ export default function EditNote() {
     }
 
     useEffect(() => {
-        console.log(username)
-
         const requestOptions = {
             method: "GET",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${user.token}`
             }
         }
-
-        fetch(`/api/note/${username}/${noteId}`, requestOptions)
+        fetch(`/api/note/${user.username}/${noteId}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             console.log(data)
@@ -64,13 +54,11 @@ export default function EditNote() {
         <div>
             <div className="creation-form">
                 <h1>Edit Note</h1>
-
                 {showAlert &&
                     <Alert variant="success" dismissible>
                         <p>{serverResponse}</p>
                     </Alert>
                 }
-
                 <Form.Group>
                     <Form.Label>Title</Form.Label>
                     <Form.Control type="text" placeholder="Title"

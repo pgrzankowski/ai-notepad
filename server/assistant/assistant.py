@@ -25,6 +25,6 @@ class Assistant:
                            session_dep=session)
         result = await self._agent.run(user_input,
                                        deps=deps)
-        return result.data
+        return result.data.rstrip('!\n')
     
 

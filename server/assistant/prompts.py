@@ -22,6 +22,8 @@ Example
 Example
     request: show me notes where content includes the word "foobar"
     response: SELECT * FROM note WHERE user_id = {user_id} and content ? 'foobar'
+
+For every request, you should use the user_id = {user_id} condition.
 """
 
 

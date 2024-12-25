@@ -3,28 +3,21 @@ import { Form, Button, Alert } from "react-bootstrap"
 import '../styles/CreateNote.css'
 import { jwtDecode } from "jwt-decode"
 import { useState } from "react"
-import { useCookies } from "react-cookie"
+import { useAuth } from "../hooks/AuthProvider"
 
 
 export default function CreateNote() {
-    
     const [serverResponse, setServerResponse] = useState('')
     const [showAlert, setShowAlert] = useState(false)
-    const [cookies] = useCookies(['access_token'])
-
+    const { user } = useAuth()
     const { register, handleSubmit, watch, reset, formState:{ errors }} = useForm()
 
     const createNote = (data) => {
-        const token = cookies.access_token
-        console.log(token)
-        const username = jwtDecode(token).sub
-        console.log(username)
-
         const requestOptions = {
             method: "POST",
             headers: {
                 'content-type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${user.token}`
             },
             body: JSON.stringify({
                 title: data.title,
@@ -32,7 +25,7 @@ export default function CreateNote() {
             })
         }
 
-        fetch(`/api/note/${username}`, requestOptions)
+        fetch(`/api/note/${user.username}`, requestOptions)
         .then(res => res.json())
         .then(data => {
             setServerResponse(data.message)

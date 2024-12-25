@@ -12,9 +12,9 @@ async def call_querry_agent(ctx: RunContext[AssistantDeps], user_input: str) -> 
     quering_deps = QueringDeps(user_id=ctx.deps.user_id)
     result: str = await quering_agent.run(user_input,
                                          deps=quering_deps)
-    print(result.data)
     query = result.data.query
     query = query.rstrip('!').replace('\\', '')
+    print(query)
     session = ctx.deps.session_dep
     if query.startswith('INSERT') or query.startswith('UPDATE') or query.startswith('DELETE'):
         session.exec(text(query))
@@ -35,7 +35,6 @@ async def call_querry_agent(ctx: RunContext[AssistantDeps], user_input: str) -> 
     else:
         response = f"Unauthorized query: {query}"
     
-    print(query)
     print(response)
     session.commit()
     return response

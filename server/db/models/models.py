@@ -13,6 +13,6 @@ class User(SQLModel, table=True):
 class Note(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(nullable=False)
-    content: str
+    content: str = Field(nullable=True)
     user_id: int = Field(foreign_key="user.id", nullable=False)
     user: Optional[User] = Relationship(back_populates="notes")
