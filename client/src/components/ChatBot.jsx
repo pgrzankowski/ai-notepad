@@ -1,7 +1,7 @@
 import '../styles/ChatBot.css'
 import { Form } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
 import { useAuth } from '../hooks/AuthProvider'
 import send_prompt from '../assets/chat_bot/send_prompt.svg'
@@ -16,6 +16,7 @@ export default function ChatBot() {
     const [conversation, setConversation] = useState([
         {id: uuidv4(), sender: "bot", text: `Hello, ${user.username}! How can I help you?`}
     ])
+    const conversationEndRef = useRef(null)
     const [isThinking, setIsThinking] = useState(false)
 
 
@@ -50,6 +51,10 @@ export default function ChatBot() {
         })
     }
 
+    useEffect(() => {
+        conversationEndRef.current.scrollIntoView({ behavior: 'smooth'  })
+    }, [conversation])
+
     return (
         <div className="chat-container">
             <div className='conversation-container'>
@@ -80,7 +85,7 @@ export default function ChatBot() {
                     </div>
                 </div>
                 }
-                
+                <div ref={conversationEndRef} />
             </div>
             <div className='prompt-container'>
                 <Form.Group className='prompt-input-container'>

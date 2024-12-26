@@ -1,10 +1,10 @@
 from pydantic_ai import RunContext
-from .schemas import AssistantDeps, QueringDeps
-from .quering_agent import quering_agent
 from sqlmodel import text
+from ..agents.chat_agent import ChatDeps
+from ..agents.query_agent import quering_agent, QueringDeps
 
 
-async def call_querry_agent(ctx: RunContext[AssistantDeps], user_input: str) -> str:
+async def call_querry_agent(ctx: RunContext[ChatDeps], user_input: str) -> str:
     """
     Tool to call the quering agent, which creates SQL queries, and execute the querry.
     user_input: str

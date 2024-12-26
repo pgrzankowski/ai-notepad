@@ -1,11 +1,15 @@
 from pydantic_ai import Agent, RunContext
-from .schemas import QueringDeps, QueringResponse
-from .prompts import QUERING_PROMPT
 from dotenv import load_dotenv
+from ..schemas.dependencies import QueringDeps
+from ..schemas.results import QueringResponse
+from ..prompts.prompts import QUERING_PROMPT
+import os
+
 
 load_dotenv()
+MODEL = os.getenv('MODEL')
 
-quering_agent = Agent(model='gemini-1.5-flash',
+quering_agent = Agent(model=MODEL,
                       deps_type=QueringDeps,
                       result_type=QueringResponse)
 

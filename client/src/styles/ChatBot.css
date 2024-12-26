@@ -16,6 +16,23 @@
     scroll-behavior: smooth;
 }
 
+.conversation-container::-webkit-scrollbar {
+    width: 5px;
+}
+
+.conversation-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.conversation-container::-webkit-scrollbar-thumb {
+    background: #000;
+}
+
+.conversation-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    cursor: pointer;
+}
+
 .prompt-container {
     flex: 1;
     display: flex;
